@@ -39,6 +39,13 @@ class OpenFile {
     OpenFile(int f) { file = f; currentOffset = 0; type = 0; }	// open the file: default method
 	OpenFile(int f, int t) { file = f; currentOffset = 0; type = t; } // open file: has argument type    
 	~OpenFile() { Close(file); }			// close the file
+	
+	// 176
+    int Seek(int pos) {// phuong thuc dich con tro trong file, int pos la so byte can dich
+		Lseek(file, pos, 0);
+		currentOffset = Tell(file);
+		return currentOffset;
+    }//
 
     int ReadAt(char *into, int numBytes, int position) { 
     	Lseek(file, position, 0); 
