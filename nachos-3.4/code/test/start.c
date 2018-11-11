@@ -52,7 +52,6 @@ Halt:
 
 	.globl Exit
 	.ent	Exit
-	
 Exit:
 	addiu $2,$0,SC_Exit
 	syscall
@@ -61,7 +60,6 @@ Exit:
 
 	.globl Exec
 	.ent	Exec
-	
 Exec:
 	addiu $2,$0,SC_Exec
 	syscall
@@ -70,7 +68,6 @@ Exec:
 
 	.globl Join
 	.ent	Join
-	
 Join:
 	addiu $2,$0,SC_Join
 	syscall
@@ -79,16 +76,14 @@ Join:
 
 	.globl Create
 	.ent	Create
-	
 Create:
-	addiu $2,$0,SC_CreateFile
+	addiu $2,$0,SC_Create
 	syscall
 	j	$31
 	.end Create
 
 	.globl Open
 	.ent	Open
-	
 Open:
 	addiu $2,$0,SC_Open
 	syscall
@@ -97,7 +92,6 @@ Open:
 
 	.globl Read
 	.ent	Read
-	
 Read:
 	addiu $2,$0,SC_Read
 	syscall
@@ -106,7 +100,6 @@ Read:
 
 	.globl Write
 	.ent	Write
-	
 Write:
 	addiu $2,$0,SC_Write
 	syscall
@@ -115,7 +108,6 @@ Write:
 
 	.globl Close
 	.ent	Close
-	
 Close:
 	addiu $2,$0,SC_Close
 	syscall
@@ -124,7 +116,6 @@ Close:
 
 	.globl Fork
 	.ent	Fork
-	
 Fork:
 	addiu $2,$0,SC_Fork
 	syscall
@@ -133,67 +124,11 @@ Fork:
 
 	.globl Yield
 	.ent	Yield
-	
 Yield:
 	addiu $2,$0,SC_Yield
 	syscall
 	j	$31
 	.end Yield
-	
-ReadInt:
-	addiu $2, $0, SC_ReadInt
-	syscall
-	j	$31
-	.end ReadInt
-
-	.globl PrintInt
-	.ent PrintInt
-
-PrintInt:
-	addiu $2, $0, SC_PrintInt
-	syscall
-	j	$31
-	.end PrintInt
-
-	.globl ReadChar
-	.ent ReadChar
-
-ReadChar:
-	addiu $2, $0, SC_ReadChar
-	syscall
-	j	$31
-	.end ReadChar
-
-	.globl PrintChar
-	.ent PrintChar
-	
-PrintChar:
-	addiu $2, $0, SC_PrintChar
-	syscall
-	j	$31
-	.end PrintChar
-
-	.globl ReadString
-	.ent ReadString
-
-ReadString:
-	addiu $2, $0, SC_ReadString
-	syscall
-	j	$31
-	.end ReadString
-
-	.globl PrintString
-	.ent PrintString
-
-PrintString:
-	addiu $2, $0, SC_PrintString
-	syscall
-	j	$31
-	.end PrintString
-	
-
-	.globl Seek
-	.ent Seek
 
 /* dummy function to keep gcc happy */
         .globl  __main
@@ -201,25 +136,4 @@ PrintString:
 __main:
         j       $31
         .end    __main
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 

@@ -38,39 +38,43 @@
 #include "copyright.h"
 #include "openfile.h"
 
-// OpenFile duy nhat
-typedef int OpenFileID;
 
+// Khoi tai bien OpenFileID toan cuc
+typedef int OpenFileID;
 #ifdef FILESYS_STUB 		// Temporarily implement file system calls as 
-							// calls to UNIX, until the real file system
-							// implementation is available
+				// calls to UNIX, until the real file system
+				// implementation is available
 class FileSystem {
   public:
-	// Khai bao 2 bien
-	OpenFile** openf; // De kiem tra xem file co dang mo khong
-	int index;
+	//Khai bao them 2 bien 
+  	OpenFile** openf; //De kiem tra xem file co dang mo khong
+	int index; // Chi so de duyet file
 	
-	// Ham khoi tao cua FileSystem	    
-	FileSystem(bool format) {
+	// Dinh nghia lai ham khoi tao cua FileSystem
+    FileSystem(bool format) {
 		openf = new OpenFile*[15];
 		index = 0;
-		for(int i = 0; i < 15; i++){
-			openf[i] = NULL;		
+		for (int i = 0; i < 15; ++i)
+		{
+			openf[i] = NULL;
 		}
 		this->Create("stdin", 0);
 		this->Create("stdout", 0);
+		// Do 0 va 1 la dung cho console input va console output trong bang mo ta file
+		// nen phai day vao phan tu thu 2 tro di
 		openf[index++] = this->Open("stdin", 2);
-		openf[index++] = this->Open("stdout", 3);
+		openf[index++] = this->Open("stdout", 3);  	
 	}
 	
-	// Ham huy
-	~FileSystem(){
-		for(int i = 0; i < 15; i++){
-			if(openf[i] != NULL)
-				delete openf[i];
+	//Ham huy doi tuong FileSystem
+	~FileSystem()
+	{
+		for (int i = 0; i < 15; ++i)
+		{
+			if (openf[i] != NULL) delete openf[i];
 		}
 		delete[] openf;
-	}	
+	}
 	
 	// Default method
     bool Create(char *name, int initialSize) { 
@@ -80,31 +84,33 @@ class FileSystem {
 		Close(fileDescriptor); 
 		return TRUE; 
 	}
-	
-
+	// Default method
     OpenFile* Open(char *name) {
 	  int fileDescriptor = OpenForReadWrite(name, FALSE);
 
 	  if (fileDescriptor == -1) return NULL;
 	  return new OpenFile(fileDescriptor);
-	}
-	
-	// Ham Open mo file voi 2 type khac nhau
-	OpenFile* Open(char *name, int type){
+      }
+	//Overload lai ham Open de mo file voi 2 type khac nhau 
+	OpenFile* Open(char *name, int type) {
 		int fileDescriptor = OpenForReadWrite(name, FALSE);
-		
+
 		if (fileDescriptor == -1) return NULL;
+		//index++;
 		return new OpenFile(fileDescriptor, type);
 	}
-	
-	// Ham tim vi tri trong trong bang mo ta file
-	int FileFreeSlot(){
-		for(int i = 2; i < 15; i++){
-			if(openf[i] == NULL) return i;
+
+	//Ham tim slot trong
+	int FindFreeSlot()
+	{
+		for(int i = 2; i < 15; i++)
+		{
+			if(openf[i] == NULL) return i;		
 		}
 		return -1;
-	}	
-
+	}
+	
+	// Default method
     bool Remove(char *name) { return Unlink(name) == 0; }
 
 };
@@ -112,24 +118,24 @@ class FileSystem {
 #else // FILESYS
 class FileSystem {
   public:
-	// Khai bao 2 bien
-	OpenFile** openf; // De kiem tra xem file co dang mo khong
+	//Khai bao
+  	OpenFile** openf;
 	int index;
-	
+
     FileSystem(bool format);		// Initialize the file system.
-									// Must be called *after* "synchDisk" 
-									// has been initialized.
-    								// If "format", there is nothing on
-									// the disk, so initialize the directory
-    								// and the bitmap of free blocks.
+					// Must be called *after* "synchDisk" 
+					// has been initialized.
+    					// If "format", there is nothing on
+					// the disk, so initialize the directory
+    					// and the bitmap of free blocks.
 
     bool Create(char *name, int initialSize);  	
-									// Create a file (UNIX creat)
+					// Create a file (UNIX creat)
 
     OpenFile* Open(char *name); 	// Open a file (UNIX open)
-	OpenFile* Open(char *name, int type); // Open file with type
-	int FindFreeSlot(); // find free slot in descriptive table of file
- 
+	OpenFile* Open(char *name, int type); //Mo file voi tham so type
+	int FindFreeSlot(); // Tim slot trong
+
     bool Remove(char *name);  		// Delete a file (UNIX unlink)
 
     void List();			// List all the files in the file system
@@ -138,9 +144,9 @@ class FileSystem {
 
   private:
    OpenFile* freeMapFile;		// Bit map of free disk blocks,
-								// represented as a file
+					// represented as a file
    OpenFile* directoryFile;		// "Root" directory -- list of 
-								// file names, represented as a file
+					// file names, represented as a file
 };
 
 #endif // FILESYS
