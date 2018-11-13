@@ -50,6 +50,10 @@ Halt:
 	j	$31
 	.end Halt
 
+	
+	
+	
+	
 	.globl Exit
 	.ent	Exit
 Exit:
@@ -58,6 +62,10 @@ Exit:
 	j	$31
 	.end Exit
 
+	
+	
+	
+	
 	.globl Exec
 	.ent	Exec
 Exec:
@@ -66,6 +74,9 @@ Exec:
 	j	$31
 	.end Exec
 
+	
+	
+	
 	.globl Join
 	.ent	Join
 Join:
@@ -74,14 +85,20 @@ Join:
 	j	$31
 	.end Join
 
-	.globl Create
-	.ent	Create
-Create:
-	addiu $2,$0,SC_Create
+	
+// Ho tro xy ly file	
+	
+	.globl CreateFile
+	.ent	CreateFile
+CreateFile:
+	addiu $2,$0,SC_CreateFile
 	syscall
 	j	$31
-	.end Create
+	.end CreateFile
 
+	
+	
+	
 	.globl Open
 	.ent	Open
 Open:
@@ -89,6 +106,9 @@ Open:
 	syscall
 	j	$31
 	.end Open
+
+	
+	
 
 	.globl Read
 	.ent	Read
@@ -98,6 +118,9 @@ Read:
 	j	$31
 	.end Read
 
+	
+	
+	
 	.globl Write
 	.ent	Write
 Write:
@@ -105,6 +128,9 @@ Write:
 	syscall
 	j	$31
 	.end Write
+
+
+
 
 	.globl Close
 	.ent	Close
@@ -114,6 +140,65 @@ Close:
 	j	$31
 	.end Close
 
+
+
+
+	.globl Seek
+	.ent	Seek
+Seek:
+	addiu $2,$0,SC_Seek
+	syscall
+	j	$31
+	.end Seek
+		
+
+
+
+// Ho tro I/O ra Console	
+	.globl ReadString
+	.ent ReadString
+ReadString:
+	addiu $2,$0,SC_ReadString
+	syscall
+	j	$31
+	.end ReadString
+
+	
+
+	
+	.globl PrintString
+	.ent PrintString
+PrintString:
+	addiu $2,$0,SC_PrintString
+	syscall
+	j	$31
+	.end PrintString	
+	
+
+
+
+	.globl ReadChar
+	.ent ReadChar
+ReadChar:
+	addiu $2,$0,SC_ReadChar
+	syscall
+	j	$31
+	.end ReadChar
+
+	
+
+	
+	.globl PrintChar
+	.ent PrintChar
+PrintChar:
+	addiu $2,$0,SC_PrintChar
+	syscall
+	j	$31
+	.end PrintChar
+
+
+
+
 	.globl Fork
 	.ent	Fork
 Fork:
@@ -122,6 +207,9 @@ Fork:
 	j	$31
 	.end Fork
 
+	
+	
+	
 	.globl Yield
 	.ent	Yield
 Yield:
@@ -130,6 +218,8 @@ Yield:
 	j	$31
 	.end Yield
 
+	
+	
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

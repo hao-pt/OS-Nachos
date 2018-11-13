@@ -102,6 +102,7 @@ int System2User(int virtAddr,int len,char* buffer)
 	return i;
 }
 
+// Ham xu ly cac ngoai le runtim cua Syscall
 void
 ExceptionHandler(ExceptionType which)
 {
@@ -185,7 +186,8 @@ ExceptionHandler(ExceptionType which)
 					interrupt->Halt();
 					break;
 				}
-				case SC_Create:{
+				// Cac syscall xu ly file
+				case SC_CreateFile:{
 					// Input: Dia chi vung nho cua filename trong userspace
 					// Output: -1 - Loi, 0 - Thanh cong
 					// Function: Tao ra file rong voi ten file: filename
@@ -198,12 +200,13 @@ ExceptionHandler(ExceptionType which)
 					DEBUG ('a',"\n Reading filename.");
 					// MaxFileLength là = 32
 					filename = User2System(virtAddr,MaxFileLength+1);
+					
 					if (strlen(filename) == 0) // filename rong
 					{
 						printf("\n File name is not valid");
 						DEBUG('a', "\n File name is not valid");
 						machine->WriteRegister(2, -1); // Return -1 vao thanh ghi r2
-						IncreasePC();					
+						//IncreasePC();					
 						break;				
 					}
 	
@@ -214,7 +217,8 @@ ExceptionHandler(ExceptionType which)
 						machine->WriteRegister(2,-1); // trả về lỗi cho chương
 									// trình người dùng
 						delete filename;
-						IncreasePC();
+						
+						//IncreasePC();
 						break;
 					}				
 					DEBUG('a',"\n Finish reading filename.");
@@ -231,7 +235,7 @@ ExceptionHandler(ExceptionType which)
 						printf("\n Error create file '%s'",filename);
 						machine->WriteRegister(2,-1);
 						delete filename;
-						IncreasePC();
+						//IncreasePC();
 						break;
 						
 					}
@@ -239,7 +243,7 @@ ExceptionHandler(ExceptionType which)
 					// người dùng thành công
 					delete filename;
 					// Doi thanh ghi lui ve sau de tiep tuc ghi
-					IncreasePC();
+					//IncreasePC();
 					break;
 				} // End case SC_Create
 				
@@ -347,6 +351,7 @@ ExceptionHandler(ExceptionType which)
 						IncreasePC();
 						return;
 					}
+
 					// Xet truong hop doc file binh thuong thi tra ve so byte thuc su
 					if ((fileSystem->openf[id]->Read(buf, charcount)) > 0)
 					{
@@ -487,12 +492,94 @@ ExceptionHandler(ExceptionType which)
 					IncreasePC();
 					return;
 				}
+				// Cac syscall nhap xuat tren Console
+				case SC_ReadString:{
+					// Phong Hao: tham khao khoa k15
+					// Input: Buffer(char*), do dai toi da cua chuoi nhap vao(int)
+					// Output: Khong co
+					// Cong dung: Doc vao mot chuoi voi tham so la buffer va do dai toi da
+					int virtAddr, length;
+					char* buffer;
+					virtAddr = machine->ReadRegister(4); // Lay dia chi tham so buffer truyen vao tu thanh ghi so 4
+					length = machine->ReadRegister(5); // Lay do dai toi da cua chuoi nhap vao tu thanh ghi so 5
+					buffer = User2System(virtAddr, length); // Copy chuoi tu vung nho User Space sang System Space
+					gSynchConsole->Read(buffer, length); // Goi ham Read cua SynchConsole de doc chuoi
+					System2User(virtAddr, length, buffer); // Copy chuoi tu vung nho System Space sang vung nho User Space
+					delete buffer; 
+					IncreasePC(); // Tang Program Counter 
+					return;
+					//break;
+				}
+				
+				case SC_PrintString:{
+					// Phong Hao: tham khao khoa k15
+					// Input: Buffer(char*)
+					// Output: Chuoi doc duoc tu buffer(char*)
+					// Cong dung: Xuat mot chuoi la tham so buffer truyen vao ra man hinh
+					int virtAddr;
+					char* buffer;
+					virtAddr = machine->ReadRegister(4); // Lay dia chi cua tham so buffer tu thanh ghi so 4
+					buffer = User2System(virtAddr, 255); // Copy chuoi tu vung nho User Space sang System Space voi bo dem buffer dai 255 ki tu
+					int length = 0;
+					while (buffer[length] != 0) length++; // Dem do dai that cua chuoi
+					gSynchConsole->Write(buffer, length + 1); // Goi ham Write cua SynchConsole de in chuoi
+					delete buffer; 
+					//IncreasePC(); // Tang Program Counter 
+					//return;
+					break;			
+				}
+				
+				case SC_ReadChar:{
+					/*
+					Input: None
+					Output: Tra ve ki tu doc duoc
+					Purpose: Nhap mot ki tu tu Console
+					*/
+					// De tranh nguoi dung nhap nhieu hon 1 ki tu lam He thong se bi loi, do do can luu het tat ca nhung gi nguoi dung nhap 
+					//va chi tra ve duy nhat 1 ki tu dau tien
+					int maxBytes = 255; // So ki tu toi da
+					char* buffer = new char[255];
+					int totalBytes = gSynchConsole->Read(buffer, maxBytes); // Goi ham Read cua SynchConsole de doc chuoi va tra ve So byte da doc duoc vao totalBytes
+					if(totalBytes > 1) // Neu nguoi dung nhap nhieu hon 1 ki tu
+					{
+						printf("Chi duoc phep nhap 1 ki tu duy nhat!");
+						DEBUG('a', "\nERROR: Chi duoc phep nhap 1 ki tu duy nhat!");
+						machine->WriteRegister(2, 0); // Tra ve 0					
+					}
+					else if(totalBytes == 0) // Neu nguoi dung khong nhap ki tu
+					{
+						printf("Khong co nhao ki tu nao!");
+						DEBUG('a', "\nERROR: Khong co nhao ki tu nao!");
+						machine->WriteRegister(2, 0); // Tra ve 0					
+					}
+					else // Nguoi dung nhap 1 ki tu
+					{
+						char c = buffer[0];
+						machine->WriteRegister(2, c); // Tra ve 0					
+					}
+
+					// Giai phong vung nho cho buffer
+					delete buffer;
+					break;
+				}
+				case SC_PrintChar:{
+					/*
+					Input: 1 ki tu character
+					Output: In ra ki tu c ra console
+					Purpose: In mot 1 ki tu ra console
+					*/
+					// Lay ki tu trong thanh ghi r4
+					char c = (char)machine->ReadRegister(4);
+					gSynchConsole->Write(&c, 1); // In ki tu c
+					break;
+				}
+
 				
 				default:{
 					printf("\n Unexpected user mode exception (%d %d)", which, type);
-					IncreasePC();
 				}
 			} // End switch(type)
+			IncreasePC(); // Nap dia chi thanh ghi PC moi vao
 		} // End case SyscallException
 	} // End switch(which)
 } // End ExceptionHandler

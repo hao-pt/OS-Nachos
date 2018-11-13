@@ -20,20 +20,24 @@
  */
 #define SC_Halt		0
 //System call cho Thao tac
-#define SC_Exit		1
-#define SC_Exec		2
-#define SC_Join		3
-//Syscall cho file
-#define SC_Create	4
-#define SC_Open		5
-#define SC_Read		6
-#define SC_Write	7
-#define SC_Close	8
-#define SC_Seek		11
+#define SC_Exit		   1
+#define SC_Exec		   2
+#define SC_Join		   3
+//Syscall cho file     
+#define SC_CreateFile	   4
+#define SC_Open		   5
+#define SC_Read		   6
+#define SC_Write	   7
+#define SC_Close	   8
+#define SC_Seek		   11
 //Syscall cho multithreading
 #define SC_Fork		9
 #define SC_Yield	10
-//Syscall co ban
+//Syscall co ban cho I/O
+#define SC_ReadString  12
+#define SC_PrintString 13
+#define SC_ReadChar 14
+#define SC_PrintChar 15
 
 #ifndef IN_ASM
 
@@ -88,9 +92,40 @@ typedef int OpenFileId;
  * the console device.
  */
 
+
 #define ConsoleInput	0  
 #define ConsoleOutput	1  
- 
+// Ho tro nhap xuat
+/*
+Input: Vung nho chua chuoi tra ve va so luong ki tu muon doc
+Output: Tra ve chuoi da doc vao buffer
+Purpose: Doc mot chuoi tu console
+*/
+void ReadString(char buffer[], int length);
+
+/*
+Input: Vung nho chua chuoi can in ra console
+Output: Khong
+Purpose: In mot chuoi ra console
+*/
+void PrintString(char buffer[]);
+
+/*
+Input: None
+Output: Tra ve ki tu doc duoc
+Purpose: Nhap mot ki tu tu Console
+*/
+char ReadChar();
+
+/*
+Input: 1 ki tu character
+Output: In ra ki tu c ra console
+Purpose: In mot 1 ki tu ra console
+*/
+void PrintChar(char c);
+
+// Ho tro xu ly file
+
 /* Create a Nachos file, with "name" */
 // Input: file name
 // Output: 0 thanh cong, -1 that bai
@@ -126,6 +161,7 @@ int Seek(int pos, OpenFileId id);
 /* Fork a thread to run a procedure ("func") in the *same* address space 
  * as the current thread.
  */
+
 void Fork(void (*func)());
 
 /* Yield the CPU to another runnable thread, whether in this address space 
