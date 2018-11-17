@@ -1,49 +1,38 @@
 #include "syscall.h"
 #include "copyright.h"
-#define MAX_LENGTH 255
-int main()
-{
+#define MAXSIZE 255
 
-	int stdin;
-	int stdout;
-	char buffer[MAX_LENGTH];
-	int len; 
-/*	PrintString("\n\t\t\t-----ECHO TRONG NACHOS-----\n\n");
-	PrintString(" - stdin: ");
+int main(){
+	int STDIN;
+	int STDOUT;
+	char buff[MAXSIZE];
+	int len;
+	PrintString("\n\n\t\t <<<< ECHO >>>> \n\n\n");
 	
-	// Goi ham Open de mo file stdin 
-	stdin = Open("stdin", 2);
-	
-	if (stdin != -1)
-	{
-		// Goi ham Read de doc noi dung nhap vao stdin
-		//Bay gio len vua co the la do dai, vua co the la ket qua (thanh cong/that bai) cua ham Read()
-		len = Read(buffer, MAX_LENGTH, stdin);
-		
-		if (len != -1 && len != -2) //Kiem tra co bi loi, hay co EOF hay khong
-		{
-			stdout = Open("stdout", 3); // Goi ham Open voi type = 3 de su dung stdout
-			
-			if (stdout != -1)
-			{
-				PrintString(" -> stdout: ");
-				Write(buffer, len, stdout); // Goi ham Write de ghi noi dung doc duoc vao stdout
-				Close(stdout); // Goi ham Close de dong stdout
+	PrintString("- Enter - STDIN: ");
+	STDIN = Open("stdin",2); // Goi phuong syscall Open de doc tren Console
+	if(STDIN!=-1){
+		// Lay so luong byte da doc duoc
+		len = Read(buff, MAXSIZE, STDIN);
+		if(len!=0){
+			PrintString(">\t~Read string from STDIN success!~\n");
+			STDOUT = Open("stdout",3);
+			if(STDOUT !=-1){
+				PrintString(">\tSTDOUT: ");
+				Write(buff, len, STDOUT);
+				PrintString("\n\n");
+				Close(STDOUT);
+			}
+			else {
+				PrintString(">\t~Print on STDOUT fail!~\n\n");
 			}
 		}
-		Close(stdin); // Goi ham Close de dong stdin
+		else {
+			PrintString(">\t~Get error when reading or user dont enter anything!~\n\n");
+		}
+		Close(STDOUT);
 	}
-	PrintString("\n\n");
-*/
-
-	char str[50];
-	int length = 50;
-	PrintString("------------CHUONG TRINH ECHO-------------\n\n");
-	PrintString("Nhap chuoi: ");
-	ReadString(str, length);
-	PrintString("Chuoi vua nhap: ");
-	PrintString(str);
-	PrintString("\n\n");
 	
 	return 0;
+	
 }

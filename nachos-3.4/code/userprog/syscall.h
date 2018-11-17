@@ -19,16 +19,25 @@
  * is being asked for
  */
 #define SC_Halt		0
-#define SC_Exit		1
-#define SC_Exec		2
-#define SC_Join		3
-#define SC_CreateFile 	4
-#define SC_Open		5
-#define SC_Read		6
-#define SC_Write	7
-#define SC_Close	8
+//System call cho Thao tac
+#define SC_Exit		   1
+#define SC_Exec		   2
+#define SC_Join		   3
+//Syscall cho file     
+#define SC_CreateFile	   4
+#define SC_Open		   5
+#define SC_Read		   6
+#define SC_Write	   7
+#define SC_Close	   8
+#define SC_Seek		   11
+//Syscall cho multithreading
 #define SC_Fork		9
 #define SC_Yield	10
+//Syscall co ban cho I/O
+#define SC_ReadString  12
+#define SC_PrintString 13
+#define SC_ReadChar 14
+#define SC_PrintChar 15
 
 #ifndef IN_ASM
 
@@ -83,16 +92,53 @@ typedef int OpenFileId;
  * the console device.
  */
 
+
 #define ConsoleInput	0  
 #define ConsoleOutput	1  
- 
+// Ho tro nhap xuat
+/*
+Input: Vung nho chua chuoi tra ve va so luong ki tu muon doc
+Output: Tra ve chuoi da doc vao buffer
+Purpose: Doc mot chuoi tu console
+*/
+void ReadString(char buffer[], int length);
+
+/*
+Input: Vung nho chua chuoi can in ra console
+Output: Khong
+Purpose: In mot chuoi ra console
+*/
+void PrintString(char buffer[]);
+
+/*
+Input: None
+Output: Tra ve ki tu doc duoc
+Purpose: Nhap mot ki tu tu Console
+*/
+char ReadChar();
+
+/*
+Input: 1 ki tu character
+Output: In ra ki tu c ra console
+Purpose: In mot 1 ki tu ra console
+*/
+void PrintChar(char c);
+
+// Ho tro xu ly file
+
 /* Create a Nachos file, with "name" */
+// Input: file name
+// Output: 0 thanh cong, -1 that bai
+// Purpose: Tao file voi ten la name
 int CreateFile(char *name);
 
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
  */
-OpenFileId Open(char *name);
+// Input: arg1: Dia chi cua chuoi name, arg2: type
+// Output: Tra ve OpenFileID neu thanh cong, -1 neu loi
+// Chuc nang: Mo va tra ve ID cua file.
+OpenFileId Open(char *name, int type);
 
 /* Write "size" bytes from "buffer" to the open file. */
 void Write(char *buffer, int size, OpenFileId id);
@@ -103,12 +149,20 @@ void Write(char *buffer, int size, OpenFileId id);
  * characters to read, return whatever is available (for I/O devices, 
  * you should always wait until you can return at least one character).
  */
+
+// Input: buffer(char*): Vung nho de luu, size(int): So ki tu muon doc, id cua file(OpenFileID)
+// Output: -1: Loi, So byte read thuc su: Thanh cong, -2: Thanh cong
+// Cong dung: Doc file voi tham so la buffer, so ky tu cho phep va id cua file
 int Read(char *buffer, int size, OpenFileId id);
 
 /* Close the file, we're done reading and writing to it. */
 void Close(OpenFileId id);
 
-
+// Ham Seek
+// Input: Vi tri(int), id cua file(OpenFileID)
+// Output: -1: Loi, Vi tri thuc su: Thanh cong
+// Cong dung: Di chuyen con tro den vi tri thich hop trong file voi tham so la vi tri can chuyen va id cua file
+int Seek(int pos, OpenFileId id);
 
 /* User-level thread operations: Fork and Yield.  To allow multiple
  * threads to run within a user program. 
@@ -117,6 +171,7 @@ void Close(OpenFileId id);
 /* Fork a thread to run a procedure ("func") in the *same* address space 
  * as the current thread.
  */
+
 void Fork(void (*func)());
 
 /* Yield the CPU to another runnable thread, whether in this address space 

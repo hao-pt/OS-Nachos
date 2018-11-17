@@ -36,20 +36,19 @@
 #define MemorySize 	(NumPhysPages * PageSize)
 #define TLBSize		4		// if there is a TLB, make it small
 
-enum ExceptionType { NoException,           // Everything ok!
-		     SyscallException,      // A program executed a system call.
-		     PageFaultException,    // No valid translation found
-		     ReadOnlyException,     // Write attempted to page marked 
-					    // "read-only"
-		     BusErrorException,     // Translation resulted in an 
-					    // invalid physical address
-		     AddressErrorException, // Unaligned reference or one that
-					    // was beyond the end of the
-					    // address space
-		     OverflowException,     // Integer overflow in add or sub.
-		     IllegalInstrException, // Unimplemented or reserved instr.
-		     
-		     NumExceptionTypes
+enum ExceptionType {	NoException,           // Everything ok!
+						SyscallException,      // A program executed a system call.
+						PageFaultException,    // No valid translation found
+						ReadOnlyException,     // Write attempted to page marked 
+						// "read-only"
+						BusErrorException,     // Translation resulted in an 
+						// invalid physical address
+						AddressErrorException, // Unaligned reference or one that
+						// was beyond the end of the
+						// address space
+						OverflowException,     // Integer overflow in add or sub.
+						IllegalInstrException, // Unimplemented or reserved instr.
+						NumExceptionTypes
 };
 
 // User program CPU state.  The full set of MIPS registers, plus a few
@@ -57,17 +56,17 @@ enum ExceptionType { NoException,           // Everything ok!
 // any two instructions (thus we need to keep track of things like load
 // delay slots, etc.)
 
-#define StackReg	29	// User's stack pointer
-#define RetAddrReg	31	// Holds return address for procedure calls
-#define NumGPRegs	32	// 32 general purpose registers on MIPS
-#define HiReg		32	// Double register to hold multiply result
-#define LoReg		33
-#define PCReg		34	// Current program counter
-#define NextPCReg	35	// Next program counter (for branch delay) 
-#define PrevPCReg	36	// Previous program counter (for debugging)
-#define LoadReg		37	// The register target of a delayed load.
+#define StackReg	    29	// User's stack pointer
+#define RetAddrReg	    31	// Holds return address for procedure calls
+#define NumGPRegs	    32	// 32 general purpose registers on MIPS
+#define HiReg		    32	// Double register to hold multiply result
+#define LoReg		    33
+#define PCReg		    34	// Current program counter
+#define NextPCReg	    35	// Next program counter (for branch delay) 
+#define PrevPCReg	    36	// Previous program counter (for debugging)
+#define LoadReg		    37	// The register target of a delayed load.
 #define LoadValueReg 	38	// The value to be loaded by a delayed load.
-#define BadVAddrReg	39	// The failing virtual address on an exception
+#define BadVAddrReg	    39	// The failing virtual address on an exception
 
 #define NumTotalRegs 	40
 

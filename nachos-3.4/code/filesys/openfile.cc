@@ -34,8 +34,9 @@ OpenFile::OpenFile(int sector)
     seekPosition = 0;
 }
 
-// altertive method: has type
-OpenFile::OpenFile(int sector, int _type){
+//Ham khoi tao bo sung them tham so type
+OpenFile::OpenFile(int sector, int _type)
+{
 	hdr = new FileHeader;
 	hdr->FetchFrom(sector);
 	seekPosition = 0;
@@ -131,7 +132,7 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
     if ((numBytes <= 0) || (position >= fileLength))
     	return 0; 				// check request
     if ((position + numBytes) > fileLength)		
-		numBytes = fileLength - position;
+	numBytes = fileLength - position;
     DEBUG('f', "Reading %d bytes at %d, from file of length %d.\n", 	
 			numBytes, position, fileLength);
 

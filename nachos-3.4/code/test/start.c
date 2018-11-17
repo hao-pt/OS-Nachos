@@ -50,176 +50,180 @@ Halt:
 	j	$31
 	.end Halt
 
+	
+	
+	
+	
 	.globl Exit
 	.ent	Exit
-	
 Exit:
 	addiu $2,$0,SC_Exit
 	syscall
 	j	$31
 	.end Exit
 
+	
+	
+	
+	
 	.globl Exec
 	.ent	Exec
-	
 Exec:
 	addiu $2,$0,SC_Exec
 	syscall
 	j	$31
 	.end Exec
 
+	
+	
+	
 	.globl Join
 	.ent	Join
-	
 Join:
 	addiu $2,$0,SC_Join
 	syscall
 	j	$31
 	.end Join
 
-	.globl Create
-	.ent	Create
 	
-Create:
+// Ho tro xy ly file	
+	
+	.globl CreateFile
+	.ent	CreateFile
+CreateFile:
 	addiu $2,$0,SC_CreateFile
 	syscall
 	j	$31
-	.end Create
+	.end CreateFile
 
+	
+	
+	
 	.globl Open
 	.ent	Open
-	
 Open:
 	addiu $2,$0,SC_Open
 	syscall
 	j	$31
 	.end Open
 
+	
+	
+
 	.globl Read
 	.ent	Read
-	
 Read:
 	addiu $2,$0,SC_Read
 	syscall
 	j	$31
 	.end Read
 
+	
+	
+	
 	.globl Write
 	.ent	Write
-	
 Write:
 	addiu $2,$0,SC_Write
 	syscall
 	j	$31
 	.end Write
 
+
+
+
 	.globl Close
 	.ent	Close
-	
 Close:
 	addiu $2,$0,SC_Close
 	syscall
 	j	$31
 	.end Close
 
+
+
+
+	.globl Seek
+	.ent	Seek
+Seek:
+	addiu $2,$0,SC_Seek
+	syscall
+	j	$31
+	.end Seek
+		
+
+
+
+// Ho tro I/O ra Console	
+	.globl ReadString
+	.ent ReadString
+ReadString:
+	addiu $2,$0,SC_ReadString
+	syscall
+	j	$31
+	.end ReadString
+
+	
+
+	
+	.globl PrintString
+	.ent PrintString
+PrintString:
+	addiu $2,$0,SC_PrintString
+	syscall
+	j	$31
+	.end PrintString	
+	
+
+
+
+	.globl ReadChar
+	.ent ReadChar
+ReadChar:
+	addiu $2,$0,SC_ReadChar
+	syscall
+	j	$31
+	.end ReadChar
+
+	
+
+	
+	.globl PrintChar
+	.ent PrintChar
+PrintChar:
+	addiu $2,$0,SC_PrintChar
+	syscall
+	j	$31
+	.end PrintChar
+
+
+
+
 	.globl Fork
 	.ent	Fork
-	
 Fork:
 	addiu $2,$0,SC_Fork
 	syscall
 	j	$31
 	.end Fork
 
+	
+	
+	
 	.globl Yield
 	.ent	Yield
-	
 Yield:
 	addiu $2,$0,SC_Yield
 	syscall
 	j	$31
 	.end Yield
+
 	
-ReadInt:
-	addiu $2, $0, SC_ReadInt
-	syscall
-	j	$31
-	.end ReadInt
-
-	.globl PrintInt
-	.ent PrintInt
-
-PrintInt:
-	addiu $2, $0, SC_PrintInt
-	syscall
-	j	$31
-	.end PrintInt
-
-	.globl ReadChar
-	.ent ReadChar
-
-ReadChar:
-	addiu $2, $0, SC_ReadChar
-	syscall
-	j	$31
-	.end ReadChar
-
-	.globl PrintChar
-	.ent PrintChar
 	
-PrintChar:
-	addiu $2, $0, SC_PrintChar
-	syscall
-	j	$31
-	.end PrintChar
-
-	.globl ReadString
-	.ent ReadString
-
-ReadString:
-	addiu $2, $0, SC_ReadString
-	syscall
-	j	$31
-	.end ReadString
-
-	.globl PrintString
-	.ent PrintString
-
-PrintString:
-	addiu $2, $0, SC_PrintString
-	syscall
-	j	$31
-	.end PrintString
-	
-
-	.globl Seek
-	.ent Seek
-
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main
 __main:
         j       $31
         .end    __main
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
