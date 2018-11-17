@@ -81,7 +81,7 @@ class OpenFile {
 		return len;
 	}
 	
-	// Get vi tri hien tai trong file	
+	// Get vi tri con tro file hien tai trong file	
 	int GetCurrentPos(){
 		currentOffset = Tell(file);
 		return currentOffset;

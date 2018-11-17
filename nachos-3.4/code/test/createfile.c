@@ -35,7 +35,7 @@ int main()
 		}
 		Close(stdin); // Goi ham Close de dong stdin
 	}
-
+	
 	/*Create a file voi filename mac dinh
 	if (CreateFile("text.txt") == -1) // Tao file khong thanh cong
 	{

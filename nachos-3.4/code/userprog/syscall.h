@@ -135,6 +135,9 @@ int CreateFile(char *name);
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
  */
+// Input: arg1: Dia chi cua chuoi name, arg2: type
+// Output: Tra ve OpenFileID neu thanh cong, -1 neu loi
+// Chuc nang: Mo va tra ve ID cua file.
 OpenFileId Open(char *name, int type);
 
 /* Write "size" bytes from "buffer" to the open file. */
@@ -146,12 +149,19 @@ void Write(char *buffer, int size, OpenFileId id);
  * characters to read, return whatever is available (for I/O devices, 
  * you should always wait until you can return at least one character).
  */
+
+// Input: buffer(char*): Vung nho de luu, size(int): So ki tu muon doc, id cua file(OpenFileID)
+// Output: -1: Loi, So byte read thuc su: Thanh cong, -2: Thanh cong
+// Cong dung: Doc file voi tham so la buffer, so ky tu cho phep va id cua file
 int Read(char *buffer, int size, OpenFileId id);
 
 /* Close the file, we're done reading and writing to it. */
 void Close(OpenFileId id);
 
 // Ham Seek
+// Input: Vi tri(int), id cua file(OpenFileID)
+// Output: -1: Loi, Vi tri thuc su: Thanh cong
+// Cong dung: Di chuyen con tro den vi tri thich hop trong file voi tham so la vi tri can chuyen va id cua file
 int Seek(int pos, OpenFileId id);
 
 /* User-level thread operations: Fork and Yield.  To allow multiple

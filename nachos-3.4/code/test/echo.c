@@ -8,8 +8,8 @@ int main(){
 	char buff[MAXSIZE];
 	int len;
 	PrintString("\n\n\t\t <<<< ECHO >>>> \n\n\n");
-	PrintString("- Enter - STDIN: ");
 	
+	PrintString("- Enter - STDIN: ");
 	STDIN = Open("stdin",2); // Goi phuong syscall Open de doc tren Console
 	if(STDIN!=-1){
 		// Lay so luong byte da doc duoc
@@ -32,6 +32,7 @@ int main(){
 		}
 		Close(STDOUT);
 	}
+	
 	return 0;
 	
 }
