@@ -1,0 +1,7 @@
+Các file liên quan đến đồ án 2:
+Thư mục threads: 
+	thread.h, thread.cc
+Thư mục userprog:
+	addrspace.h, addspace.cc
+	bitmap.h, bitmap.cc
+	
