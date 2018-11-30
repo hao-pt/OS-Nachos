@@ -9,7 +9,7 @@
   
       1612476 - Tran Thi Hong Nhung
 
-## [Lab 01: Exceptions và các system calls đơn giản] (https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2001)
+## [Lab 01: Exceptions và các system calls đơn giản](https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2001)
 
 
  **Nội dung gồm 11 phần và báo cáo:** 
@@ -21,7 +21,7 @@
    - _Github của K15:_
    https://github.com/nguyenthanhchungfit/Nachos-Programing-HCMUS
 
-## [Lab 02: Đa chương] (https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2002)
+## [Lab 02: Đa chương](https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2002)
 
 
 **Nội dung:**
