@@ -622,9 +622,10 @@ ExceptionHandler(ExceptionType which)
 				// ------------------Cai dat cac syscall cho da chuong-----------------------------
 				case SC_Exec:
 				{
-					// SpaceId Exec(char *name);					
-					// Input: vi tri int
+					// Cu phap: SpaceId Exec(char *name);					
+					// Input: Ten chuong trinh name
 					// Output: Fail return -1, Success: return id cua thread dang chay
+					// Cong dung: Exec system call sử dụng lớp PCB và Ptable để gọi thực thi một chương trình mới trong một system thread mới.
 					
 					int virtAddr;
 					virtAddr = machine->ReadRegister(4);	// doc dia chi ten chuong trinh tu thanh ghi r4
@@ -667,9 +668,10 @@ ExceptionHandler(ExceptionType which)
 				}
 				case SC_Join:
 				{       
-					// int Join(SpaceId id)
+					// Cu phap: int Join(SpaceId id)
 					// Input: id dia chi cua thread
-					// Output: 
+					// Output: Tra ve exitcode
+					// Cong dung: Join system call sử dụng lớp PCB và Ptable để thực hiện đợi và block dựa trên tham số “SpaceID id”.
 					int id = machine->ReadRegister(4); // Đọc id của tiến trình cần Join từ thanh ghi r4.
 					// Gọi thực hiện pTab->JoinUpdate(id) và lưu kết quả thực hiện của hàm vào thanh ghi r2.
 					int res = pTab->JoinUpdate(id);
@@ -680,8 +682,10 @@ ExceptionHandler(ExceptionType which)
 				}
 				case SC_Exit:
 				{
-					//void Exit(int status);
+					// Cu phap: void Exit(int status);
 					// Input: status code
+					// Cong dung: Exit system call sử dụng lớp PCB và Ptable để thực hiện thoát tiến trình nó đã join.
+
 					int exitStatus = machine->ReadRegister(4); // Đọc exitStatus từ thanh ghi r4
 
 					if(exitStatus != 0)

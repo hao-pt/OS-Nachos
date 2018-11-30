@@ -60,6 +60,8 @@ void Halt();
 /* This user program is done (status = 0 means exited normally). */
 
 // Address space control operations: Exit, Exec, and Join
+
+// Cong dung: Exit system call sử dụng lớp PCB và Ptable để thực hiện thoát tiến trình nó đã join.
 // Chuong trinh nguoi dung da chay xong (status = 0 nghia la thoat hop le)
 void Exit(int status);	
 
@@ -69,13 +71,17 @@ typedef int SpaceId;
 /* Run the executable, stored in the Nachos file "name", and return the 
  * address space identifier
  */
+
+// Exec system call sử dụng lớp PCB và Ptable để gọi thực thi một chương trình mới trong một system thread mới.
 // Chay file thuc thi, luu trong Nachos file ten la "name" va tra ve address space indentifier
 SpaceId Exec(char *name);
  
 /* Only return once the the user program "id" has finished.  
  * Return the exit status.
  */
-// Chi return 1 lan khi chuong trinh nguoi dung voi "id" da chay xong
+
+// Join system call sử dụng lớp PCB và Ptable để thực hiện đợi và block dựa trên tham số “SpaceID id”.
+// Chi return 1 lan khi chuong trinh co "id" da chay xong
 // Tra ve trang thai Exit
 int Join(SpaceId id);	
  
