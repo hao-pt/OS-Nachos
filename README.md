@@ -21,7 +21,7 @@
    - _Github của K15:_
    https://github.com/nguyenthanhchungfit/Nachos-Programing-HCMUS
 
-## [Lab 02: Đa chương](https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2002)
+## [Lab 02: Đa chương](https://github.com/tienhaophung/OS-Nachos/tree/master/Lab%2002%20-%20New%20version/nachos-3.4)
 
 
 **Nội dung:**
