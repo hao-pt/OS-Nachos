@@ -1,0 +1,57 @@
+											Các file liên quan đến đồ án 2
+Thư mục threads: 
+	thread.h, thread.cc: các thao tác xử lý tiến trình
+		thread.h: Bo sung 1 so thuoc tinh (ProcessID: để phân biệt các tiến trình)
+		thread.cc: Bo sung khoi tao gia tri cho cac thuoc tinh mới thêm vào
+	
+	system.h, system.cc: Lớp chứa các biến toàn cục và điều phối hệ điều hành
+		system.h: Bo sung cac bien toan cuc.
+			extern Semaphore *addrLock;	// semaphore trong synch.h, dùng để 
+			extern BitMap *gPhysPageBitMap;	// quan ly cac frame vat ly tren ram
+			extern BitMap *pageTable; // Quan ly cac trang
+			extern int *parentIdTable; // Quan ly cac tien trinh cha
+			extern char** fileNameTable; // Quan ly ten cac tien trinh
+			Lưu ý: biến currentThread là con trỏ lưu giữ tiến trình hiện tại. Ta sẽ thao tác nhiều đối với biến này
+		system.cc: Cấp phát bộ nhớ cho các biến toàn cục vừa khai báo ở trên
+		
+	synch.h, synch.cc: Dung phuong thuc P() để chuyển tiến trình hiện tại sang trạng thái chờ và đợi tiến trình con thực hiện
+	
+Thư mục userprog:
+	addrspace.h, addspace.cc: Biến chương trình từ đơn chương thành đa chương
+		addrspace.h: Bổ sung thêm hàm khởi tạo
+			AddrSpace(char* filename); // Bo sung phuong thuoc khoi tao voi tham so truyen vao: filename
+		addrspace.cc: Chỉnh sửa hàm khởi tạo AddrSpace(OpenFile *executable), bổ sung thêm hàm khởi tạo AddrSpace(char* filename) và chỉnh sửa hàm ~AddrSpace()
+	bitmap.h, bitmap.cc: Su dung Bitmap de quan ly cac processes
+	protest.cc: thêm phương thức StartProcess_2 va chỉnh sửa phương thức StartProcess
+				Ý nghĩa: Khi 1 tiến trình chạy thì nó sẽ thực hiện kiểm tra và cấp phát bộ nhớ
+	syscall.h: Định nghĩa các syscall và hàm cho Exec, Wait
+	exception.cc: Cài đặt các syscall SC_Exec, SC_Wait
+		SC_Exec:
+			// a. Tạo ra một không gian địa chỉ mới
+			Thread *mythread;
+			int pid;
+			// Kiểm tra thread đã khởi tạo thành công chưa, nếu chưa thì báo lỗi là không đủ bộ nhớ va return -1
+			mythread = new Thread(name); // (./threads/thread.h)
+			// ...
+			
+			// b. Load chương trình vào khoảng bộ nhớ mới được cấp phát
+			// ...
+			
+			// c. Sau đó tạo thread mới (bằng phương thức Thread::Fork()) để thực thi chương trình.
+			// Gọi thực thi Fork(StartProcess, pid) => Ta cast thread thành kiểu int, sau đó khi xử ký hàm StartProcess ta cast Thread về đúng kiểu của nó.
+			mythread->Fork(StartProcess_2, pid);
+			// Nhuong CPU cho mythread
+			currentThread->Yield();
+			// ...
+		SC_Wait:
+			// ...
+			addrLock->P(); // Tiến trình chuyển sang trạng thái block và ngừng lại, doi tien trinh con thuc hien
+	
+Thư mục test:	
+	Bổ sung các chương trình test: ping.c, pong.c và scheduler.c
+
+Để chạy chương trình dùng lệnh: Vào thư mục code, mở Terminal lên và gõ lệnh:
+	./userprog/nachos -rs 1023 -x ./test/scheduler
+	
+Tham khảo: https://drive.google.com/file/d/1rkxuK8ATdgmPi8naC6KUp_QcXhtacYN9/view?usp=sharing
+	
