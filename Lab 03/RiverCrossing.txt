@@ -1,0 +1,107 @@
+/*
+16. River crossing: Xem de sach hdh /127
+	a) Các ràng buộc
+		i. Lên thuyền: boardBoat(). TH: 3 employee and 1 hacker bị cấm và ngược lại
+		ii. Khi thuyền đầy 4 chỗ, người cuối cùng gọi hàm chèo thuyền RowBoat()
+		iii. Độc quyền truy xuất cho 1 người (Hacker or Employee): Dùng biến mutex = 1
+	b) Hackers và employee bên ngoài thuyền phải chờ đến khi Up(waitingToBoardH) and Up(waitingToBoardE)
+		Những người đã lên thuyền phải chờ tín hiệu báo chèo thuyền qua sống Up(waitingToRow)
+		Khởi tạo:	int waitingToBoardE = 0; // Bao hieu da cho phep cac Employee ben ngoai len thuyen 
+					int waitingToBoardH = 0; // Bao hieu da cho phep cac Hacker ben ngoai len thuyen
+					int waitingToRow = 0; // Bao hieu bat dau xuat phat
+	c)	Khởi tạo:
+		int wH = 0; // Để biết số Hacker đang chờ lên thuyền
+		int wE = 0; // Để biết số Employee đang chờ lên thuyền
+		int aH = 0; // Số Hacker đã được chỉ định lên thuyền nhưng vẫn chưa lên thuyền
+		int aE = 0; // Số Employee đã được chỉ định lên thuyền nhưng vẫn chưa lên thuyền
+		int inBoat = 0; // Số người hiện tại trên thuyền
+*/
+
+const int MAX = 4; // So nguoi toi da duoc len thuyen
+
+HackerArrives(){
+	Down(mutex); // Doc quyen truy xuat
+	
+	wH++; // Tang so Hacker chờ len thuyen
+	
+	// Trong khi chua co Hacker nao da duoc chi dinh len thuyen
+	while(aH == 0){
+		// Neu tong so nguoi tren thuyen va so nguoi duoc chi dinh len thuyen < MAX
+		// va nêu có 1 cặp Hacker thì được chỉ định cho lên thuyền
+		if(inBoat + aE + aH < MAX && wH >= 2){
+			wH -= 2;	aH += 2;
+			Up(waitingToBoardH); // Bao hieu da Hacker vao
+		}
+		else{
+			Down(waitingToBoardH); // Doi 1 cap Hacker khac 
+		}
+		
+	}
+	
+	// Board: Len thuyen
+	aH--; // Giam so Hacker da duoc chi dinh len thuyen
+	BoardBoat(); // Len thuyen
+	inBoat++; // Tang so nguoi tren thuyen
+	
+	// Neu thuyen da du 4 nguoi, nguoi cuoi cung len thuyen se bao hieu xuat phat
+	if(inBoat == MAX){
+		Up(waitingToRow); // Bao hieu xuat phat
+		RowBoat(); // Bat dau cheo thuyen
+		// Reset lai số người cho luot di moi
+		inBoat = 0;
+		// Bao hieu cho duoc duyet len thuyen cho cac Hacker tiep theo
+		Up(waitingToBoardH);
+		Up(waitingToBoardH);
+		// Bao hieu cho duoc duyet len thuyen cho Employee tiep theo
+		Up(waitingToBoardE);
+		Up(waitingToBoardE);
+	}
+	else{
+		// Doi nguoi cuoi cung
+		Down(waitingToRow);
+	}
+	Up(mutex);
+}
+
+EmployeeArrives(){
+	Down(mutex); // Doc quyen truy xuat
+	
+	eH++; // Tang so Employee chờ len thuyen
+	
+	// Trong khi chua co Employee nao da duoc chi dinh len thuyen
+	while(aE == 0){
+		// Neu tong so nguoi tren thuyen va so nguoi duoc chi dinh len thuyen < MAX
+		// va nếu có 1 cặp Employee được chỉ định lên thuyền
+		if(inBoat + aE + aH < MAX && wE >= 2){
+			wE -= 2;	aE += 2;
+			Up(waitingToBoardE); // Bao hieu da cho Employee vao
+		}
+		else{
+			Down(waitingToBoardE); // Doi 1 cap Employee khac 
+		}
+		
+	}
+	
+	// Board: Len thuyen
+	aE--; // Giam so Employee da duoc chi dinh len thuyen
+	BoardBoat(); // Len thuyen
+	inBoat++; // Tang so nguoi tren thuyen
+	
+	// Neu thuyen da du 4 nguoi, nguoi cuoi cung len thuyen se bao hieu xuat phat
+	if(inBoat == MAX){
+		Up(waitingToRow); // Bao hieu xuat phat
+		RowBoat(); // Bat dau cheo thuyen
+		// Reset lai tat ca cho luot di moi
+		inBoat = 0;
+		Up(waitingToBoardE);
+		Up(waitingToBoardE);
+		Up(waitingToBoardH);
+		Up(waitingToBoardH);
+	}
+	else{
+		// Doi nguoi cuoi cung
+		Down(waitingToRow);
+	}
+	Up(mutex);
+}	
+	
