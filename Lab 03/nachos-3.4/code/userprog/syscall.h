@@ -18,30 +18,31 @@
 /* system call codes -- used by the stubs to tell the kernel which system call
  * is being asked for
  */
-#define SC_Halt		0
+#define SC_Halt				0
 //System call cho process
-#define SC_Exit		   1
-#define SC_Exec		   2
-#define SC_Join		   3
+#define SC_Exit		  		1
+#define SC_Exec		   		2
+#define SC_Join		   		3
 //Syscall cho file     
-#define SC_CreateFile	   4
-#define SC_Open		   5
-#define SC_Read		   6
-#define SC_Write	   7
-#define SC_Close	   8
-#define SC_Seek		   11
+#define SC_CreateFile	   		4
+#define SC_Open		   		5
+#define SC_Read		   		6
+#define SC_Write	   		7
+#define SC_Close	   		8
+#define SC_Seek		   		11
 //Syscall cho multithreading
-#define SC_Fork		9
-#define SC_Yield	10
+#define SC_Fork				9
+#define SC_Yield			10
 //Syscall co ban cho I/O
-#define SC_ReadString  12
-#define SC_PrintString 13
-#define SC_ReadChar 14
-#define SC_PrintChar 15
+#define SC_ReadString  			12
+#define SC_PrintString 			13
+#define SC_ReadChar 			14
+#define SC_PrintChar 			15
+#define SC_PrintInt			19
 // Syscall cho semaphore
-#define SC_CreateSemaphore	16
-#define SC_Down			17
-#define SC_Up			18
+#define SC_CreateSemaphore		16
+#define SC_Down				17
+#define SC_Up				18
 
 #ifndef IN_ASM
 
@@ -140,7 +141,14 @@ Purpose: In mot 1 ki tu ra console
 */
 void PrintChar(char c);
 
-// Ho tro xu ly file
+/*
+Input: 1 Integer
+Output: Khong
+Purpose: In 1 so nguyen ra man hinh console
+*/
+void PrintInt(int number);
+
+//--------------------------------------------------------Ho tro xu ly file----------------------------------------------------------------------
 
 /* Create a Nachos file, with "name" */
 // Input: file name

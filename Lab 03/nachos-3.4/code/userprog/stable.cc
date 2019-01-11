@@ -61,7 +61,7 @@ int STable::Wait(char *name){
 		}
 	}
 	
-	printf("This semaphore does not exist!");
+	printf("This %s semaphore does not exist!", name);
 	return -1;
 }
 
@@ -79,7 +79,7 @@ int STable::Signal(char *name){
 		}
 	}
 	
-	printf("This semaphore does not exist!");
+	printf("This %s semaphore does not exist!", name);
 	return -1;
 }
 	

@@ -328,7 +328,7 @@ ExceptionHandler(ExceptionType which)
 				case SC_Read:{
 					// Syntax: int Read(char *buffer, int size, OpenFileId id);
 					// Input: buffer(char*): Vung nho de luu, size(int): So ki tu muon doc, id cua file(OpenFileID)
-					// Output: -1: Loi, So byte read thuc su: Thanh cong, -2: Thanh cong
+					// Output: -1: Loi, So byte read thuc su: Thanh cong, -2: Dang doc tu console va cham toi cuoi file
 					// Cong dung: Doc file voi tham so la buffer, so ky tu cho phep va id cua file
 					
 					// Lay cac tham so dau vao
@@ -618,6 +618,70 @@ ExceptionHandler(ExceptionType which)
 					char c = (char)machine->ReadRegister(4);
 					gSynchConsole->Write(&c, 1); // In ki tu c
 					break;
+				}
+				case SC_PrintInt:
+				{	
+					// Cu phap: void PrintInt(int n);
+		 			// Input: 1 integer
+                   			// Output: 
+                    			// Chuc nang: In 1 so nguyen len man hinh console
+					
+					// Lay so nguyen trong thanh ghi r4
+                    			int number = machine->ReadRegister(4);
+		    			if(number == 0)
+                    			{
+                        			gSynchConsole->Write("0", 1); // In ra man hinh so 0
+                        			IncreasePC();
+                        			return;    
+                    			}
+                    
+                    			// Cac buoc chuyen doi so thanh chuoi
+                    			bool isNeg = false; // Mac dinh: Duong
+                    			int count = 0; // So chu so cua number
+                    			int idx = 0; // Chi so bat dau cua 1 so nguyen
+					
+					// Neu so am					
+					if(number < 0) 
+			                {
+                        			isNeg = true;
+                        			number = number * -1; // Dua ve so nguyen duong
+						idx = 1; 
+			                } 	
+                    			
+					// Dem so chua so cua number
+                    			int t = number;
+                    			while(t)
+                    			{
+                        			count++;
+                        			t /= 10;
+                    			}
+    
+		    			// Tao buffer chuoi de in ra man hinh
+                    			char* buffer;
+                    			int MAX_BUFFER = 255;
+                    			buffer = new char[MAX_BUFFER + 1];
+					
+					// Duyet nguoc chuoi					
+                    			for(int i = idx + count - 1; i >= idx; i--)
+                    			{
+                        			buffer[i] = (char)((number % 10) + 48);
+                        			number /= 10;
+                    			}
+					
+					// Neu la so am thi them '-' tai vi tri 0
+                    			if(isNeg)
+                    			{
+                        			buffer[0] = '-';
+						buffer[count + 1] = 0; // Dat dau ket thuc chuoi, co tinh luon dau '-' dau chuoi
+                        			gSynchConsole->Write(buffer, count + 1);
+                    			}
+					else{
+		    				buffer[count] = 0; // Dat dau ket thuc chuoi	
+                    				gSynchConsole->Write(buffer, count);
+					}
+                    			delete buffer;
+                    			IncreasePC();
+                    			return;        			
 				}
 				// ------------------Cai dat cac syscall cho da chuong-----------------------------
 				case SC_Exec:

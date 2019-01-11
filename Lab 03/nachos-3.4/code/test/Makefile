@@ -35,7 +35,7 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort echo createfile cat copy ping pong scheduler
+all: halt shell matmult sort echo createfile cat copy ping pong scheduler sema_test philosopher1 philosopher2 philosopher3 philosopher4 philosopher5 processA processB processAB make_chassis make_tire assemble vehicle_assembly
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
@@ -107,3 +107,83 @@ scheduler.o: scheduler.c
 scheduler: scheduler.o start.o
 	$(LD) $(LDFLAGS) start.o scheduler.o -o scheduler.coff
 	../bin/coff2noff scheduler.coff scheduler
+
+sema_test.o: sema_test.c
+	$(CC) $(CFLAGS) -c sema_test.c
+sema_test: sema_test.o start.o
+	$(LD) $(LDFLAGS) start.o sema_test.o -o sema_test.coff
+	../bin/coff2noff sema_test.coff sema_test
+
+philosopher1.o: philosopher1.c
+	$(CC) $(CFLAGS) -c philosopher1.c
+philosopher1: philosopher1.o start.o
+	$(LD) $(LDFLAGS) start.o philosopher1.o -o philosopher1.coff
+	../bin/coff2noff philosopher1.coff philosopher1
+
+philosopher2.o: philosopher2.c
+	$(CC) $(CFLAGS) -c philosopher2.c
+philosopher2: philosopher2.o start.o
+	$(LD) $(LDFLAGS) start.o philosopher2.o -o philosopher2.coff
+	../bin/coff2noff philosopher2.coff philosopher2
+
+philosopher3.o: philosopher3.c
+	$(CC) $(CFLAGS) -c philosopher3.c
+philosopher3: philosopher3.o start.o
+	$(LD) $(LDFLAGS) start.o philosopher3.o -o philosopher3.coff
+	../bin/coff2noff philosopher3.coff philosopher3
+
+philosopher4.o: philosopher4.c
+	$(CC) $(CFLAGS) -c philosopher4.c
+philosopher4: philosopher4.o start.o
+	$(LD) $(LDFLAGS) start.o philosopher4.o -o philosopher4.coff
+	../bin/coff2noff philosopher4.coff philosopher4
+
+philosopher5.o: philosopher5.c
+	$(CC) $(CFLAGS) -c philosopher5.c
+philosopher5: philosopher5.o start.o
+	$(LD) $(LDFLAGS) start.o philosopher5.o -o philosopher5.coff
+	../bin/coff2noff philosopher5.coff philosopher5
+
+processA.o: processA.c
+	$(CC) $(CFLAGS) -c processA.c
+processA: processA.o start.o
+	$(LD) $(LDFLAGS) start.o processA.o -o processA.coff
+	../bin/coff2noff processA.coff processA
+
+processB.o: processB.c
+	$(CC) $(CFLAGS) -c processB.c
+processB: processB.o start.o
+	$(LD) $(LDFLAGS) start.o processB.o -o processB.coff
+	../bin/coff2noff processB.coff processB
+
+processAB.o: processAB.c
+	$(CC) $(CFLAGS) -c processAB.c
+processAB: processAB.o start.o
+	$(LD) $(LDFLAGS) start.o processAB.o -o processAB.coff
+	../bin/coff2noff processAB.coff processAB
+
+make_chassis.o: make_chassis.c
+	$(CC) $(CFLAGS) -c make_chassis.c
+make_chassis: make_chassis.o start.o
+	$(LD) $(LDFLAGS) start.o make_chassis.o -o make_chassis.coff
+	../bin/coff2noff make_chassis.coff make_chassis
+
+make_tire.o: make_tire.c
+	$(CC) $(CFLAGS) -c make_tire.c
+make_tire: make_tire.o start.o
+	$(LD) $(LDFLAGS) start.o make_tire.o -o make_tire.coff
+	../bin/coff2noff make_tire.coff make_tire
+
+assemble.o: assemble.c
+	$(CC) $(CFLAGS) -c assemble.c
+assemble: assemble.o start.o
+	$(LD) $(LDFLAGS) start.o assemble.o -o assemble.coff
+	../bin/coff2noff assemble.coff assemble
+
+vehicle_assembly.o: vehicle_assembly.c
+	$(CC) $(CFLAGS) -c vehicle_assembly.c
+vehicle_assembly: vehicle_assembly.o start.o
+	$(LD) $(LDFLAGS) start.o vehicle_assembly.o -o vehicle_assembly.coff
+	../bin/coff2noff vehicle_assembly.coff vehicle_assembly
+
+

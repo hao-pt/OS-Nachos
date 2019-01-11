@@ -1,4 +1,4 @@
-											Các file liên quan đến đồ án 2
+											Các file liên quan đến đồ án 3
 Thư mục threads: 
 	thread.h, thread.cc: các thao tác xử lý tiến trình
 		thread.h: Bo sung 1 so thuoc tinh
@@ -80,6 +80,10 @@ Thư mục test:
 	Đa chương:
 		Bổ sung các chương trình test: ping.c, pong.c và scheduler.c
 	Đồng bộ hóa:
+		Bổ sung các chương trình test cho bai toan Dinning philosopher: sema_test.h/sema_test.c, philosopher1.c, philosopher2.c, philosopher3.c, philosopher4.c, philosopher5.c
+		Bổ sung các chương trình test cho bai toan Process A&B (Bài 12/Tài liệu ôn tập): processA.c, processB.c, processAB.c
+		Bổ sung các chương trình test cho bai toan Vehicle assembly (Bài 15/Tài liệu ôn tập): make_chassis.c, make_tire.c, assemble.c, vehicle_assembly.c
+		Khai báo các file .c trong file Makefile
 		
 Để chạy chương trình dùng lệnh: Vào thư mục code, mở Terminal lên và gõ lệnh:
 	./userprog/nachos -rs 1023 -x ./test/scheduler
